@@ -1,0 +1,398 @@
+<doctype html>
+<html>
+<head>
+<script>if (typeof module ==='object'){window.module = module; module = undefined;}</script>
+  <script type="text/javascript" src="js/dijkstra.js"></script>
+  <script src="js/jquery.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/go-debug.js"></script>
+  <script src="js/flowchart.js"></script>
+  <script src="js/networkinit.js"></script>
+  
+  <script src="js/computeShortest.js"></script>
+
+  <script> if (window.module) module = window.module;</script>
+  <link rel="stylesheet" href="Styles/bootstrap.min.css" >
+  <link href="Styles/font-awesome.min.css" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
+    
+  <style type="text/css">
+    header {
+      margin: 2%;
+      padding: 2%;
+      width: 80%;
+      height: 80px;
+      background: lightgray;
+      color:white;
+      font-size: 30px;
+      border-radius: 20px 20px 20px 20px;
+    }
+    h3 {
+      color:white;
+      font-weight: bold;
+    }
+    #dochead{
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+   </style>
+
+<title>
+Finding the shortest path using Dijkstra Algorithm, implemented with javascript
+</title>
+</head>
+
+<body onload="init()">
+<center>
+<header>
+
+  Dijkstra Algorithm implemented in Javascript by Group Two members
+
+</header>
+</center>
+
+
+
+
+                <section id="content" class="shortcode-item">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <h2>Technical breakdown</h2> 
+                    <div class="tab-wrap">
+                        <div class="media">
+                            <div class="parrent pull-left">
+                                <ul class="nav nav-tabs nav-stacked">
+                                    <li class="active"><a href="#tab1" data-toggle="tab" class="analistic-01">1.  Diagram</a></li>
+                                    <li class=""><a href="#tab2" data-toggle="tab" class="analistic-02">2.  Flowchart</a></li>
+                                    <li class=""><a href="#tab3" data-toggle="tab" class="tehnical">3.  Pseudocode</a></li>
+                                    <li class=""><a href="#tab4" data-toggle="tab" class="tehnical">4.  Algorithm</a></li>
+                                    <li class=""><a href="#tab5" data-toggle="tab" class="tehnical">5.  Calculate Shortest Distance</a></li>
+                                    <li class=""><a href="#tab6" data-toggle="tab" class="tehnical">6.  Group Members</a></li>
+                                    <li class=""><a href="#tab7" data-toggle="tab" class="tehnical">7.  Documentation</a></li>
+                                </ul>
+                            </div>
+
+                            <div class="parrent media-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active in" id="tab1">
+                                        <div class="media">
+                                           <div class="pull-left">
+                                                
+                                            </div>
+                                            <div class="media-body">
+                                                 <h4>Network Diagram</h4>
+                                                 <div id="die">
+  <div id="myDiagramDivs" style="border: solid 1px black; width: 100%; height: 400px"></div>
+    
+  <div>
+    
+    <textarea id="mySavedModels" style="width:100%;height:300px;display: none;">{ "class": "go.GraphLinksModel",
+  "nodeKeyProperty": "id",
+  "nodeDataArray": [ 
+{"id":0, "loc":"518 72.99999999999999", "text":"A"},
+{"id":1, "loc":"647 187", "text":"D"},
+{"id":2, "loc":"514.9999999999999 276.99999999999994", "text":"C"},
+{"id":3, "loc":"383 183.00000000000006", "text":"B"},
+{"id":4, "loc":"517.9999999999999 183.99999999999986", "text":"E"},
+{"text":"F", "id":-6, "loc":"399.5 549"},
+{"text":"J", "id":-7, "loc":"647.5 552"},
+{"text":"G", "id":-8, "loc":"522.5 445"},
+{"text":"H", "id":-9, "loc":"524.5 552"},
+{"text":"I", "id":-10, "loc":"529.5 654"}
+ ],
+  "linkDataArray": [ 
+{"from":2, "to":3, "text":"2", "points":[515.0368242914686,289.6514732846797,481.1349942631144,275.60397794560805,448.3221944508278,253.13567819113783,413.7156776742975,217.11623156493775]},
+{"from":3, "to":0, "points":[412.2311682345996,186.25175629969405,439.95271678493464,149.33858829476407,474.6346529881983,121.06746112020012,518.0494926158195,100.56671960173105], "text":"3"},
+{"from":1, "to":0, "points":[647.1371372783024,197.8621646791219,604.8822064388742,176.37925215075575,571.7664471248295,147.0748544702403,546.3744341076426,109.34863249114154], "text":"3"},
+{"from":2, "to":1, "points":[544.8975971373843,280.75639640022507,572.0874169494894,248.68324361745215,605.6118427617038,225.96348010916216,647.0255947081263,212.08042539602565], "text":"2"},
+{"from":3, "to":4, "points":[416.6563036959106,197.3150704286972,450.5407589642883,186.66789970954144,484.3167824483043,186.9379967127632,518.0239748669899,198.20981463973752], "text":"2"},
+{"from":1, "to":4, "points":[647.0244418450178,211.9432618137141,614.7723266028646,222.25611320375785,582.7197402199977,221.50231828648188,550.8385083739252,209.54248589912117], "text":"2"},
+{"from":4, "to":0, "points":[527.3166829162811,184.4726540050663,518.5332912730202,160.05466281425413,518.6556117452113,136.03736466345435,527.7507444199674,111.53873449351863], "text":"1"},
+{"from":2, "to":4, "points":[523.1827397639291,277.8573044242005,514.7939395016786,258.79418686195635,515.3077636844064,240.26974699969384,524.7942937869949,221.60080022592052], "text":"1"},
+{"from":-10, "to":-6, "points":[529.5448743977007,666.4323824763552,486.75068722317343,646.9660975971187,453.23391534325447,619.8948587710304,427.0015043529528,584.5790991586709], "text":"3"},
+{"from":-10, "to":-7, "points":[556.2220928905032,656.8117125474569,578.7611006570746,623.1905287310273,608.4037725319354,597.5672021951307,647.5487745165459,578.8810050939192], "text":"3"},
+{"from":-7, "to":-8, "points":[647.5505177773914,563.9333738816767,606.3419649607246,543.8544524843285,574.6187216064762,516.5952357481304,550.022797790926,481.08566449037846], "text":"2"},
+{"from":-6, "to":-8, "points":[426.5424285280378,552.048282463914,450.66535148748403,517.5633969387396,481.9830900508639,491.18574923843045,522.5478844985391,472.0281020133187], "text":"2"},
+{"from":-10, "to":-9, "points":[536.7320026362938,654.8799548099561,527.2659351571829,633.6978322844491,526.3343183628128,612.6864513142882,533.9392014525982,590.6025865944158], "text":"3"},
+{"from":-9, "to":-8, "points":[532.9637009517983,552.630310944933,523.7378862643639,529.6213218320563,523.3140025507169,506.9435431519379,531.6981983801612,483.53697211833247], "text":"2"},
+{"from":-9, "to":-6, "points":[524.5226321446228,576.46850640987,492.8147480613158,586.3473468503166,461.51178282907523,585.5989343518914,430.56057324381237,574.1982350845964], "text":"1"},
+{"from":-9, "to":-7, "points":[556.5189228346467,565.9606190420385,586.8642001810347,555.4834193008151,617.1821000905173,555.4834193008151,647.5279033396152,566.0698736112469], "text":"1"},
+{"from":-8, "to":2, "points":[532.7477202877669,445.14469928396943,520.0494282707408,402.62514308261257,518.3382005870542,359.6138257813166,527.6748497051394,315.95578255104175], "text":"1"},
+{"from":-7, "to":1, "points":[660.6567956203182,552.0037179704088,647.3243472383481,443.2874969940625,647.5606059195807,334.60977574027396,661.3643020009257,225.9628513224228], "text":"4"},
+{"from":-6, "to":3, "points":[411.796570230361,549.006815461541,393.7208240353488,440.6532824129116,389.1916373789705,331.6419412814523,398.2331515584785,221.9651482146984], "text":"4"}
+ ]}
+    </textarea>
+  </div>
+</div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                     <div class="tab-pane active in" id="tab2">
+                                        <div class="media">
+                                           <div class="pull-left">
+                                                
+                                            </div>
+                                            <div class="media-body">
+                                                 <h4>Flowchart</h4>
+                                                <div id="sample">
+  <div style="width: 100%; display: flex; justify-content: space-between">
+    <div id="myPaletteDiv" style="width: 100px; margin-right: 2px; background-color: whitesmoke; border: solid 1px black"></div>
+    <div id="myDiagramDiv" style="flex-grow: 1; height: 720px; border: solid 1px black"></div>
+  </div>
+  
+  
+  <textarea id="mySavedModel" style="width:100%;height:300px; display:none;">{ "class": "go.GraphLinksModel",
+  "linkFromPortIdProperty": "fromPort",
+  "linkToPortIdProperty": "toPort",
+  "nodeDataArray": [ 
+{"category":"Comment", "loc":"360 -10", "text":"Flowchart", "key":-13},
+{"key":-1, "category":"Start", "loc":"175 0", "text":"Start"},
+{"key":1, "loc":"175 100", "text":"Get the children of the start node with their respective cost and store it in  an array"},
+{"key":2, "loc":"175 271", "text":"Loop through all the children in the cost and pick the smallest cost which has not been processed before and is the smallest"},
+{"key":7, "loc":"174 493", "text":"Loop through each child of the Node picked in the step above and calculate the distance form this node to all its children. We do this by adding the distance of the child to the distance of this node "},
+{"key":8, "loc":"174 704", "text":"Add this node as an item in the processed array and update the cost by adding the value of each of its children after the additon"},
+{"key":-2, "category":"End", "loc":"176 1375", "text":"Stop"},
+{"text":"Is the stop node we want in the cost array", "figure":"Diamond", "key":-3, "loc":"173.5 1136"},
+{"text":"Output shortest path", "key":-9, "loc":"175.5 1275"},
+{"text":"Then add a child in the step above we check if the cost is smaller than the one stored previously which if yes will now override the stored one", "key":-10, "loc":"173.5 951"}
+ ],
+  "linkDataArray": [ 
+{"from":1, "to":2, "fromPort":"B", "toPort":"T", "points":[175,140.2508972167969,175,150.2508972167969,175,173.59341354370116,175,173.59341354370116,175,196.93592987060546,175,206.93592987060546]},
+{"from":7, "to":8, "fromPort":"B", "toPort":"T", "points":[174,580.8772430419922,174,590.8772430419922,174,610.4065864562988,174,610.4065864562988,174,629.9359298706055,174,639.9359298706055]},
+{"from":-1, "to":1, "fromPort":"B", "toPort":"T", "points":[175,24.773340092148892,175,34.77334009214889,175,42.261221437676014,175,42.261221437676014,175,49.74910278320313,175,59.74910278320313]},
+{"from":2, "to":7, "fromPort":"B", "toPort":"T", "points":[175,335.0640701293945,175,345.0640701293945,175,370.09341354370116,174,370.09341354370116,174,395.1227569580078,174,405.1227569580078]},
+{"from":-3, "to":-9, "fromPort":"B", "toPort":"T", "visible":true, "points":[173.5,1184.2508972167968,173.5,1194.2508972167968,173.5,1221.4065864562988,175.5,1221.4065864562988,175.5,1248.5622756958007,175.5,1258.5622756958007]},
+{"from":-3, "to":2, "fromPort":"L", "toPort":"L", "visible":true, "points":[6.2841949462890625,1136,-3.7158050537109375,1136,-3.7158050537109375,271,39.321590423583984,271,82.3589859008789,271,92.3589859008789,271], "text":"No"},
+{"from":-9, "to":-2, "fromPort":"B", "toPort":"T", "points":[175.5,1291.4377243041993,175.5,1301.4377243041993,175.5,1316.6912495102993,176,1316.6912495102993,176,1331.9447747163995,176,1341.9447747163995]},
+{"from":-10, "to":-3, "fromPort":"B", "toPort":"T", "points":[173.5,1015.0640701293946,173.5,1025.0640701293946,173.5,1051.406586456299,173.5,1051.406586456299,173.5,1077.7491027832032,173.5,1087.7491027832032]},
+{"from":8, "to":-10, "fromPort":"B", "toPort":"T", "points":[174,768.0640701293946,174,778.0640701293946,174,827.5,173.5,827.5,173.5,876.9359298706055,173.5,886.9359298706055]}
+ ]}
+
+  </textarea>
+  
+</div>
+
+
+
+                                            </div>
+                                        </div>
+                                     </div>
+
+                                     <div class="tab-pane" id="tab3">
+                                        <pre>
+                                          
+function Dijkstra(Graph,Source):
+  for each vertex v in Graph:
+      dist[v] := Infinity
+      previuos[v] := undefined
+  dist[source] := 0 
+   Q:= the set of all nodes in Graph
+   while Q is not empty
+      u :=node in Q with smallest dist[]
+      remove u from Q
+      for each neighbour v of u:
+        alt := dist[u]+dist_between(u,v)
+      if alt < dist[v]
+        dist[v] := alt
+        previous[v] := u
+    return dist[],prev[]
+
+                                        </pre>
+                                     </div>
+                                     
+                                     <div class="tab-pane" id="tab4">
+                                        <p>
+                                        <pre>
+                                          
+
+// 1. Calculate the distance between any nodes in the dataset, without needing to edit the problem dictionary.
+// 2. Prevent algorithm from going back to start node if loops exist in graph (e.g., in problem below)
+
+const problem = {
+  start: {B: 3, D: 3, E: 1},
+  B: {C: 2, E: 2, F: 4},
+  C: {B: 2, D: 2, E: 1, G: 1},
+  D: {C: 2, E: 2, J: 4},
+  E: {B: 2, C: 1, D: 2},
+  F: {B: 4, G: 2, H: 1, finish: 3},
+  G: {C: 1, F: 2, H: 2, J: 2},
+  H: {F: 1, G: 2, finish: 3, J: 1},
+  J: {D: 4, G: 2, H: 1, finish: 3},
+  finish:{}
+  
+};
+
+
+function log(message) {
+    const logging = false;
+    if (logging) {
+        console.log(message);
+    }
+}
+
+const lowestCostNode = (costs, processed) => {
+    return Object.keys(costs).reduce((lowest, node) => {
+        if (lowest === null || costs[node] < costs[lowest]) {
+            if (!processed.includes(node)) {
+                lowest = node;
+            }
+        }
+        return lowest;
+    }, null);
+};
+
+// function that returns the minimum cost and path to reach Finish
+const dijkstra = (graph, startNodeName, endNodeName) => {
+
+    // track the lowest cost to reach each node
+    let costs = {};
+    costs[endNodeName] = "Infinity";
+    costs = Object.assign(costs, graph[startNodeName]);
+
+    // track paths
+    const parents = {endNodeName: null};
+    for (let child in graph[startNodeName]) {
+        parents[child] = startNodeName;
+    }
+
+    // track nodes that have already been processed
+    const processed = [];
+
+    let node = lowestCostNode(costs, processed);
+
+    while (node) {
+        let cost = costs[node];
+        let children = graph[node];
+        for (let n in children) {
+            if (String(n) === String(startNodeName)) {
+                log("WE DON'T GO BACK TO START");
+            } else {
+                log("StartNodeName: " + startNodeName);
+                log("Evaluating cost to node " + n + " (looking from node " + node + ")");
+                log("Last Cost: " + costs[n]);
+                let newCost = cost + children[n];
+                log("New Cost: " + newCost);
+                if (!costs[n] || costs[n] > newCost) {
+                    costs[n] = newCost;
+                    parents[n] = node;
+                    log("Updated cost und parents");
+                } else {
+                    log("A shorter path already exists");
+                }
+            }
+        }
+        processed.push(node);
+        node = lowestCostNode(costs, processed);
+    }
+
+  //used for getting the full path of the shortest path
+  //this is done by appending all the elements in the 
+  // parents array and then reversing it 
+    let optimalPath = [endNodeName];
+    let parent = parents[endNodeName];
+    while (parent) {
+        optimalPath.push(parent);
+        parent = parents[parent];
+    }
+    optimalPath.reverse();
+
+    const results = {
+        distance: costs[endNodeName],
+        path: optimalPath
+    };
+
+    return results;
+};
+
+
+
+                                        </pre>
+                                        </p>
+                                     </div>
+
+                                     <div class="tab-pane" id="tab5">
+                                        <h3>Select the start node and the end node.</h3>
+                                          Start node: 
+                                          <select name="start" class="start">
+                                          <option value="start" selected class="">A</option>
+                                          </select>
+                                          Stop node: 
+                                          <select name="stop" class="stop">
+                                          
+                                          <option value="B" class="">B</option>
+                                          <option value="C" class="">C</option>
+                                          <option value="D" class="">D</option>
+                                          <option value="E" class="">E</option>
+                                          <option value="F" class="">F</option>
+                                          <option value="G" class="">G</option>
+                                          <option value="H" class="">H</option>
+                                          <option value="finish" class="">I</option>
+                                          <option value="J" class="">J</option>
+                                          </select>
+
+                                          <input type="button" style="margin:1%;" class="btn btn-submit" onclick="computeShortest()"value="Go">
+                                        
+                                        <div id="resultCompute" style="background-color: lightgrey;padding:2%;margin:1%;" >
+                                          <h3>Results will be shown here</h3>
+                                        </div>
+                                     </div>
+                                     <div class="tab-pane" id="tab6">
+                                        <p><b>MEMBERS OF GROUP TWO</b></p>
+                                        <table class="table table-striped" style="font-weight: bold">
+                                          <tr><td>S/N</td><td>REG NO</td><td>Full Name</td></tr>
+                                          <tr><td>1</td><td>20131843895</td><td>Nwachukwu Chibuike A</td></tr>
+                                          <tr><td>2</td><td>20131837015</td><td>Ugwu Johnson O</td></tr>
+                                          <tr><td>3</td><td>20131837005</td><td>Ugwu Kenneth C</td></tr>
+                                          <tr><td>4</td><td>20131843865</td><td>Modili Stephen</td></tr>
+                                          <tr><td>5</td><td>20131849435</td><td>Egenti Marcel C</td></tr>
+                                          <tr><td>6</td><td>20131858045</td><td>Akaluso David C</td></tr>
+                                          <tr><td>7</td><td></td><td>Ndubuisi Somtochukwu C</td></tr>
+                                          <tr><td>8</td><td>20131836925</td><td>Ikebude Emeka Stephen</td></tr>
+                                          <tr><td>9</td><td>20131864385</td><td>Ogheneovo Ese</td></tr>
+                                          <tr><td>10</td><td></td><td>Okeke Franklin Ikechukwu</td></tr>
+                                          <tr><td>11</td><td>20131858105</td><td>Nze Sandra C</td></tr>
+                                          <tr><td>12</td><td>20131836905</td><td>Ezurike Bright U</td></tr>
+                                          <tr><td>13</td><td>20131836955</td><td>Itubo Stella</td></tr>
+                                          <tr><td>14</td><td>20131849695</td><td>Onuegbu Joy O</td></tr>
+                                          <tr><td>15</td><td>20131858145</td><td>Solomon Charles</td></tr>
+                                          <tr><td>16</td><td></td><td>Okwara Nkemdirim Julius</td></tr>
+                                          <tr><td>17</td><td>20131864415</td><td>Oparah Bright U</td></tr>
+                                          <tr><td>18</td><td></td><td>Okeke Franklin I</td></tr>
+                                          <tr><td>19</td><td>20131849715</td><td>Umeji Onyedika Augustine </td></tr>
+                                          <tr><td>20</td><td></td><td>Anyanwu Grace C</td></tr>
+                                          
+                                        </table>
+                                     </div>
+                                     <div class="tab-pane" id="tab7">
+                                        <p id="dochead"><u>Documentation Here.</u></p><hr/>
+                                        <p>This software is broken into different parts that show different things. It is broken into 7 major part as listed below
+                                        <ol>
+                                          <li><b>Diagram</b>: This shows the assignment given to us as a network diagram, that is it simply shows the diagram of the assignment</li> 
+                                          <li><b>Flowchart</b>: This describes the algorithm used in pictural form, that is the algorithm is implemented using a flowchart</li> 
+                                          <li><b>Pseudocode</b>: This shows the algorithm used in english-like statement</li> 
+                                          <li><b>Algorithm</b>: This shows the algorithm implemented in JavaScript</li> 
+                                          <li><b>Calculate Shortest distance</b><br><b>What it does</b> : This calculates the shortest distance from node A to any node. It also shows the path it took to arrive at its conclusion.<br/>
+                                          <b>How to use it </b>: Simply select the start node( which is node A) and then select the stop node (the node you wish to calculate it's shortest distance from A), and then click on the get button. This will show the result in the container below</li> 
+                                          <li><b>Group Members</b>: This shows all members of this group</li> 
+                                          <li><b>Documentation</b>: This shows the documentation of the software</li> 
+                                        </ol>
+                                           </p>
+                                     </div>
+                                </div> <!--/.tab-content-->  
+                            </div> <!--/.media-body--> 
+                        </div> <!--/.media-->     
+                    </div><!--/.tab-wrap-->               
+                </div><!--/.col-sm-6-->
+
+                
+
+       
+</body>
+
+</html>
